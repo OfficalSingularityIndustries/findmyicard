@@ -16,7 +16,7 @@ import { UserData } from '../../providers/user-data';
 export class LoginPage {
     login: UserOptions = {username: '', password: ' '};
     submitted = false;
-
+    
     constructor(
         public userData: UserData,
         public router: Router
