@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +12,11 @@ export class RegisterPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+  register(form) {
+    this.authService.register(form.value).suscribe((res) => {
+      this.register.navigateByUrl('home');
+    });
   }
 
 }
