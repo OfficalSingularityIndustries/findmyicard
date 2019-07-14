@@ -29,7 +29,7 @@ export class AuthService {
         this.authSubject.next(true);
       }
     })
-  );
+    );
   }
   
 }
