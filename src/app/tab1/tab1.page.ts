@@ -1,19 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent,
 GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment} from '@ionic-native/google-maps';
+import { NavController, Platform } from '@ionic/angular';
+
 
 @Component({
-  selector: 'Location-Home',
+  selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+
+  @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
 
-  constructor() {}
+  constructor(private platform:Platform) {}
 
-  ionViewDidLoad() {
-    this.loadMap();
+  async ngOnInit() {
+    await this.platform.ready();
+    await this.loadMap();
   }
 
   loadMap() {
@@ -24,32 +29,16 @@ export class Tab1Page {
       'API_KEY_FOR_BROWSER_DEBUG' : 'AIzaSyDOxEvOoEfcIqoIyQL6FX8tLfXecaN4zc4'
     });
 
-    let mapOptions: GoogleMapOptions = {
-      camera: {
-        target: {
-          lat: 43.0741904,
-          lng: -89.3809802
-        },
-        zoom: 18,
-        tilt: 30
-      }
-    };
+    // let mapOptions = {
+    //   center: latLng,
+    //   zoom: 1015,
+    //   mapTypeId: google.maps. MapTypeId.ROADMAP
+    
 
-    this.map = GoogleMaps.create('map_canvass', mapOptions);
-
-    let marker: Marker = this.map.addMarkerSync({
-      title: 'FindmyIcard',
-      icon: 'red',
-      animation: 'DROP',
-      position: {
-        lat: 43.0741904,
-        lng: -89.3809802
-      }
-
-    });
-    marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-      alert('clicked');
-    });
+    this.map = GoogleMaps.create('map_canvas');
   }
-
 }
+  
+
+
+    

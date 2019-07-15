@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { User } from './user';
 import { AuthResponse } from './auth-response';
 import { async } from '@angular/core/testing';
+import { logging } from 'protractor';
 
 
 
@@ -30,6 +31,28 @@ export class AuthService {
       }
     })
     );
+  }
+
+  login(user: User): Observable<AuthResponse> {
+    return this.httpClinet.post('$[this.AUTH_SERVER_ADDRESS}/login', user).pipe(
+      tap(async (res:AuthResponse) => {
+        if (res.user) {
+          await this.storage.set("ACCESS_TOKEN", res.user.access_token);
+          await this.storage.set("EXPIRES_IN", res.user.expires_in);
+          this.authSubject.next(true)
+        }
+      })
+    )
+  }
+
+  async logout() {
+    await this.storage.remove("ACCESS_TOKEN");
+    await this.storage.remove("Expires_IN");
+    this.authSubject.next(false);
+  }
+
+  isLoggedIn() {
+    return this.authSubject.asObservable();
   }
   
 }
