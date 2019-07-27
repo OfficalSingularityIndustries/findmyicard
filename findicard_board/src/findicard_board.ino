@@ -6,15 +6,27 @@
  */
 #include <google-maps-device-locator.h>
 
+GoogleMapsDeviceLocator locator;
 
-// setup() runs once, when the device is first turned on.
 void setup() {
-  // Put initialization like pinMode and begin functions here.
-
+  Serial.begin(9600);
+  // Scan for visible networks and publish to the cloud every 30 seconds
+  // Pass the returned location to be handled by the locationCallback() method
+  locator.withSubscribe(locationCallback).withLocatePeriodic(30);
 }
 
-// loop() runs over and over again, as quickly as it can execute.
-void loop() {
-  // The core of your code will likely live here.
+void locationCallback(float lat, float lon, float accuracy) {
+  // Handle the returned location data for the device. This method is passed three arguments:
+  // - Latitude
+  // - Longitude
+  // - Accuracy of estimated location (in meters)
+}
 
+void loop() {
+  locator.loop();
+  String data = String (10);
+  //Triggering the Intergration
+  Particle.publish("findmyicard", data, PRIVATE);
+  //Wait 1 minute
+  delay(60000);
 }
